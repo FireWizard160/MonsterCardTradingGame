@@ -1,7 +1,7 @@
 ﻿namespace MonsterCardTradingGame.src.Screen
 {
-    public class Screen
+    public interface IScreen
     {
-        
+        public void print();
     }
 }

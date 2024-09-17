@@ -13,6 +13,7 @@
         <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -42,6 +43,25 @@
     <ItemGroup>
         <Compile Include="Program.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="src\Card\Card.cs" />
+        <Compile Include="src\Card\MonsterCards\Dragons.cs" />
+        <Compile Include="src\Card\MonsterCards\FireElves.cs" />
+        <Compile Include="src\Card\MonsterCards\Goblins.cs" />
+        <Compile Include="src\Card\MonsterCards\Knights.cs" />
+        <Compile Include="src\Card\MonsterCards\Kraken.cs" />
+        <Compile Include="src\Card\MonsterCards\MonsterCard.cs" />
+        <Compile Include="src\Card\MonsterCards\Orks.cs" />
+        <Compile Include="src\Card\MonsterCards\Wizard.cs" />
+        <Compile Include="src\Card\SpellCard.cs" />
+        <Compile Include="src\ScoreBoard.cs" />
+        <Compile Include="src\Screen\LoginScreen.cs" />
+        <Compile Include="src\Screen\MainMenuScreen.cs" />
+        <Compile Include="src\Screen\ProfileScreen.cs" />
+        <Compile Include="src\Screen\RegisterScreen.cs" />
+        <Compile Include="src\Screen\Screen.cs" />
+        <Compile Include="src\Screen\StartScreen.cs" />
+        <Compile Include="src\User\User.cs" />
+        <Compile Include="src\User\Userstats.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

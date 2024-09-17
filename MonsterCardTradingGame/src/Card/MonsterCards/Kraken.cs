@@ -1,6 +1,6 @@
 ﻿namespace MonsterCardTradingGame.src;
 
-public class Kraken
+public class Kraken : MonsterCard
 {
     
 }

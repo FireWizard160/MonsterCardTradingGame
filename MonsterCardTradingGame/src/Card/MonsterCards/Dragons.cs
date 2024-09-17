@@ -1,6 +1,6 @@
 ﻿namespace MonsterCardTradingGame.src;
 
-public class Dragons
+public class Dragons : MonsterCard
 {
     
 }

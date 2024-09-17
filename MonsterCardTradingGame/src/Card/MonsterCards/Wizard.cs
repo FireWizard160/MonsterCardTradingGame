@@ -1,6 +1,6 @@
 ﻿namespace MonsterCardTradingGame.src;
 
-public class Wizard
+public class Wizard : MonsterCard
 {
     
 }

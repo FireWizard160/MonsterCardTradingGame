@@ -1,7 +1,16 @@
-﻿namespace MonsterCardTradingGame.src.Screen
+﻿using System;
+
+namespace MonsterCardTradingGame.src.Screen
 {
-    public class LoginScreen
+    public static class LoginScreen
     {
-        
+
+
+        public static void printLoginScreen()
+        {
+            Console.Clear();
+            Console.WriteLine("Welcome to the Monster Card Trading Game");
+        }
+
     }
 }

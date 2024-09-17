@@ -1,6 +1,6 @@
 ﻿namespace MonsterCardTradingGame.src;
 
-public class Goblins
+public class Goblins : MonsterCard
 {
     
 }

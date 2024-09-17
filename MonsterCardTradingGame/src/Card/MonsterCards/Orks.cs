@@ -1,6 +1,6 @@
 ﻿namespace MonsterCardTradingGame.src;
 
-public class Orks
+public class Orks : MonsterCard
 {
     
 }

@@ -8,7 +8,7 @@ namespace MonsterCardTradingGame.src
         private string username { get; set; }
         private string password { get; set; }
         private int coins { get; set; } = 20;
-        private int ELO { get; set; }
+        private int token { get; set; }
 
 
 
