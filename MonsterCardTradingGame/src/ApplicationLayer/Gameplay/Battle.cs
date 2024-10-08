@@ -30,25 +30,25 @@ namespace MonsterCardTradingGame.Cards
                 return 0; // Goblin won't attack Dragon
             }
 
-            if (attacker is Wizard && defender is Ork)
+            else if (attacker is Wizard && defender is Ork)
             {
                 Console.WriteLine("Wizards control Orks, no damage!");
                 return 0; // Wizard controls Ork
             }
 
-            if (attacker is SpellCard && defender is Knight && attacker._element == Element.Water)
+            else if (attacker is SpellCard && defender is Knight && attacker._element == Element.Water)
             {
                 Console.WriteLine("Knights drown instantly from WaterSpells!");
                 return 100000000; // Knight drowns instantly from WaterSpell
             }
 
-            if (attacker is SpellCard && defender is Kraken)
+            else if (attacker is SpellCard && defender is Kraken)
             {
                 Console.WriteLine("The Kraken is immune to spells!");
                 return 0; // Kraken is immune to spells
             }
 
-            if (attacker is Dragon && defender is FireElf)
+            else if (attacker is Dragon && defender is FireElf)
             {
                 Console.WriteLine("FireElves can evade Dragon attacks!");
                 return 0; // FireElf evades Dragon attacks
