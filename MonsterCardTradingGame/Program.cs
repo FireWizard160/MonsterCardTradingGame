@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using MonsterCardTradingGame.Server;
 using MonsterCardTradingGame.src.Screen;
 
 namespace MonsterCardTradingGame
@@ -9,7 +11,10 @@ namespace MonsterCardTradingGame
     {
         public static void Main(string[] args)
         {
+            HTTPServer server = new HTTPServer(IPAddress.Any, 8080);
+            server.Start();
             StartScreen.Print();
+
 
 
         }
