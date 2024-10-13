@@ -96,43 +96,43 @@
     <ItemGroup>
         <Compile Include="Program.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
-        <Compile Include="src\ApplicationLayer\Gameplay\Battle.cs" />
-        <Compile Include="src\DataAccessLayer\db\UserData.cs" />
-        <Compile Include="src\DataAccessLayer\InMemoryUserRepository.cs" />
-        <Compile Include="src\DataAccessLayer\UserController.cs" />
-        <Compile Include="src\DataAccessLayer\UserService.cs" />
-        <Compile Include="src\ModelLayer\Cards\Card.cs" />
-        <Compile Include="src\ModelLayer\Cards\Element.cs" />
-        <Compile Include="src\ModelLayer\Cards\MonsterCard.cs" />
-        <Compile Include="src\ModelLayer\Cards\MonsterCards\Dragon.cs" />
-        <Compile Include="src\ModelLayer\Cards\MonsterCards\FireElf.cs" />
-        <Compile Include="src\ModelLayer\Cards\MonsterCards\Goblin.cs" />
-        <Compile Include="src\ModelLayer\Cards\MonsterCards\Knight.cs" />
-        <Compile Include="src\ModelLayer\Cards\MonsterCards\Kraken.cs" />
-        <Compile Include="src\ModelLayer\Cards\MonsterCards\Ork.cs" />
-        <Compile Include="src\ModelLayer\Cards\MonsterCards\Wizard.cs" />
-        <Compile Include="src\ModelLayer\Cards\SpellCard.cs" />
-        <Compile Include="src\ModelLayer\ScoreBoard.cs" />
-        <Compile Include="src\ModelLayer\User\User.cs" />
-        <Compile Include="src\ModelLayer\User\Userstats.cs" />
-        <Compile Include="src\PresentationLayer\Screen\LoginScreen.cs" />
-        <Compile Include="src\PresentationLayer\Screen\MainMenuScreen.cs" />
-        <Compile Include="src\PresentationLayer\Screen\ProfileScreen.cs" />
-        <Compile Include="src\PresentationLayer\Screen\RegisterScreen.cs" />
-        <Compile Include="src\PresentationLayer\Screen\Screen.cs" />
-        <Compile Include="src\PresentationLayer\Screen\StartScreen.cs" />
-        <Compile Include="src\PresentationLayer\Server\HTTPRequest.cs" />
-        <Compile Include="src\PresentationLayer\Server\HTTPResponse.cs" />
-        <Compile Include="src\PresentationLayer\Server\HTTPServer.cs" />
-        <Compile Include="src\PresentationLayer\Server\SessionController.cs" />
-        <Compile Include="src\PresentationLayer\Server\SessionService.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="src\ApplicationLayer\" />
+        <Compile Include="src\Database\UserData.cs" />
+        <Compile Include="src\Game\Gameplay\Battle.cs" />
+        <Compile Include="src\Game\Models\Cards\Card.cs" />
+        <Compile Include="src\Game\Models\Cards\Element.cs" />
+        <Compile Include="src\Game\Models\Cards\MonsterCard.cs" />
+        <Compile Include="src\Game\Models\Cards\MonsterCards\Dragon.cs" />
+        <Compile Include="src\Game\Models\Cards\MonsterCards\FireElf.cs" />
+        <Compile Include="src\Game\Models\Cards\MonsterCards\Goblin.cs" />
+        <Compile Include="src\Game\Models\Cards\MonsterCards\Knight.cs" />
+        <Compile Include="src\Game\Models\Cards\MonsterCards\Kraken.cs" />
+        <Compile Include="src\Game\Models\Cards\MonsterCards\Ork.cs" />
+        <Compile Include="src\Game\Models\Cards\MonsterCards\Wizard.cs" />
+        <Compile Include="src\Game\Models\Cards\SpellCard.cs" />
+        <Compile Include="src\Game\Models\ScoreBoard.cs" />
+        <Compile Include="src\Game\Models\User\User.cs" />
+        <Compile Include="src\Game\Models\User\Userstats.cs" />
+        <Compile Include="src\Screen\LoginScreen.cs" />
+        <Compile Include="src\Screen\MainMenuScreen.cs" />
+        <Compile Include="src\Screen\ProfileScreen.cs" />
+        <Compile Include="src\Screen\RegisterScreen.cs" />
+        <Compile Include="src\Screen\Screen.cs" />
+        <Compile Include="src\Screen\StartScreen.cs" />
+        <Compile Include="src\Server\Controllers\SessionController.cs" />
+        <Compile Include="src\Server\Controllers\UserController.cs" />
+        <Compile Include="src\Server\HTTP\HTTPRequest.cs" />
+        <Compile Include="src\Server\HTTP\HTTPResponse.cs" />
+        <Compile Include="src\Server\HTTP\HTTPServer.cs" />
+        <Compile Include="src\Server\Repositories\InMemoryUserRepository.cs" />
+        <Compile Include="src\Server\Services\SessionService.cs" />
+        <Compile Include="src\Server\Services\UserService.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="App.config" />
       <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="src\Game\" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
