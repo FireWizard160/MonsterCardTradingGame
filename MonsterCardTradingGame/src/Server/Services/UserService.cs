@@ -5,9 +5,11 @@ namespace MonsterCardTradingGame.Services
 {
     public class UserService
     {
+        private static UserData _userData = new UserData();
         public static bool Authenticate(string username, string password)
         {
-            return InMemoryUserRepository.ValidateUser(username, password);
+            return _userData.ValidateUser(username, password);
+            //return InMemoryUserRepository.ValidateUser(username, password);
         }
 
         public static string GenerateToken(string username)
@@ -20,12 +22,14 @@ namespace MonsterCardTradingGame.Services
 
         public static bool RegisterUser(string username, string password)
         {
-            return InMemoryUserRepository.AddUser(username, password);
+            return _userData.AddUser(username, password);
+            // return InMemoryUserRepository.AddUser(username, password);
         }
 
         public static bool ValidateUser(string username, string password)
         {
-            return InMemoryUserRepository.ValidateUser(username, password);
+            return _userData.ValidateUser(username, password);
+            //return InMemoryUserRepository.ValidateUser(username, password);
         }
     }
 }

@@ -11,7 +11,8 @@ namespace MonsterCardTradingGame.Controllers
             var loginData = JsonConvert.DeserializeObject<LoginData>(request.Body);
 
             // Authenticate user
-            var token = SessionService.Login(loginData.Username, loginData.Password);
+            var token = SessionService.Login(loginData.username, loginData.password);
+
 
             if (token != null)
             {
@@ -26,7 +27,8 @@ namespace MonsterCardTradingGame.Controllers
 
     public class LoginData
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+
     }
 }
