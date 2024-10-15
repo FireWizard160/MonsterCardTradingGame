@@ -35,7 +35,7 @@ namespace MonsterCardTradingGame.Server
                 StreamReader reader = new StreamReader(stream);
                 StreamWriter writer = new StreamWriter(stream);
 
-                // Step 1: Read the incoming HTTP request
+
                 //string requestLine = reader.ReadLine();
                 byte[] buffer = new byte[client.ReceiveBufferSize];
                 int bytesRead = stream.Read(buffer, 0, buffer.Length);
@@ -47,7 +47,7 @@ namespace MonsterCardTradingGame.Server
 
                 Console.WriteLine("Received request: " + requestLine);
 
-                // Step 2: Parse HTTP request and delegate to appropriate handler
+
                 if (!string.IsNullOrEmpty(requestLine))
                 {
 
@@ -55,7 +55,7 @@ namespace MonsterCardTradingGame.Server
                     HTTPRequest request = HTTPRequest.Parse(requestLine);
                     HTTPResponse response = RouteRequest(request);
 
-                    // Step 3: Send the response back to the client
+
                     SendResponse(writer, response);
                 }
                 else
