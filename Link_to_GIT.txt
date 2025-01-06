@@ -1,3 +1,0 @@
-Commit für Semesterabgabe ist "file structure changed" auf dem main branch, beim database branch wurde schon weitergearbeitet aber es funktioniert noch nicht ganz
-
-https://github.com/FireWizard160/MonsterCardTradingGame
