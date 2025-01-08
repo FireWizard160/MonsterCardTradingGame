@@ -4,7 +4,8 @@ namespace MonsterCardTradingGame.Repositories
 {
     public class UserData
     {
-        private string _connectionString = "Host=localhost;Username=postgres;Password=mysecretpassword;Database=cardgame";
+        string _connectionString = "Host=localhost;Username=postgres;Password=1234;Database=mtcg";
+
 
         public void AddUser(string username, string password)
         {

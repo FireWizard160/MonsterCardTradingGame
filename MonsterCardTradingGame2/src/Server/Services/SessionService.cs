@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using MonsterCardTradingGame.Repositories;
 
-namespace MonsterCardTradingGame.Services
+public static class SessionService
 {
-    public class SessionService
+    private static readonly PostgreSqlUserRepository _userRepo = new();
+
+    // Login and generate a session token
+    public static string Login(string username, string password)
     {
-        private static Dictionary<string, string> _sessions = new Dictionary<string, string>();
-
-        public static string Login(string username, string password)
-        {
-            // Validate user credentials (use UserService)
-            if (UserService.ValidateUser(username, password))
-            {
-                string token = GenerateToken(username);
-                _sessions[username] = token;
-                return token;
-            }
+        if (!_userRepo.ValidateUser(username, password))
             return null;
-        }
 
-        private static string GenerateToken(string username)
-        {
-            return $"{username}-{Guid.NewGuid()}";
-        }
+        string token = Guid.NewGuid().ToString();
+        _userRepo.AddSession(username, token);
+        return token;
+    }
+
+    // Get an existing session token
+    public static string GetSession(string username)
+    {
+        return _userRepo.GetSessionToken(username);
     }
 }

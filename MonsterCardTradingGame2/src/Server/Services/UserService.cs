@@ -1,31 +1,15 @@
-﻿using System;
-using MonsterCardTradingGame.Repositories;
+﻿using MonsterCardTradingGame.Repositories;
 
 namespace MonsterCardTradingGame.Services
 {
-    public class UserService
+    public static class UserService
     {
-        public static bool Authenticate(string username, string password)
-        {
-            return InMemoryUserRepository.ValidateUser(username, password);
-        }
+        private static readonly PostgreSqlUserRepository _userRepo = new();
 
-        public static string GenerateToken(string username)
-        {
-            // Generate and store a session token
-            string token = Guid.NewGuid().ToString();
-            InMemoryUserRepository.AddSession(username, token);
-            return token;
-        }
-
+        // Register a new user
         public static bool RegisterUser(string username, string password)
         {
-            return InMemoryUserRepository.AddUser(username, password);
-        }
-
-        public static bool ValidateUser(string username, string password)
-        {
-            return InMemoryUserRepository.ValidateUser(username, password);
+            return _userRepo.AddUser(username, password);
         }
     }
 }
