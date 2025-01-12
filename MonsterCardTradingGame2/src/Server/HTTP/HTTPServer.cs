@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using MonsterCardTradingGame.Controllers;
 
 namespace MonsterCardTradingGame.Server
@@ -24,46 +25,52 @@ namespace MonsterCardTradingGame.Server
             while (true)
             {
                 var client = _listener.AcceptTcpClient();
-                HandleClient(client);
+                // Handle each client in a separate thread
+                ThreadPool.QueueUserWorkItem(HandleClient, client);
             }
         }
 
-        private void HandleClient(TcpClient client)
+        private void HandleClient(object obj)
         {
-            using (var stream = client.GetStream())
+            var client = obj as TcpClient;
+
+            try
             {
-                StreamReader reader = new StreamReader(stream);
-                StreamWriter writer = new StreamWriter(stream);
-
-
-                //string requestLine = reader.ReadLine();
-                byte[] buffer = new byte[client.ReceiveBufferSize];
-                int bytesRead = stream.Read(buffer, 0, buffer.Length);
-
-                if (bytesRead == 0)
-                    return;
-
-                string requestLine = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-
-                Console.WriteLine("Received request: " + requestLine);
-
-
-                if (!string.IsNullOrEmpty(requestLine))
+                using (var stream = client.GetStream())
                 {
+                    StreamReader reader = new StreamReader(stream);
+                    StreamWriter writer = new StreamWriter(stream);
 
+                    byte[] buffer = new byte[client.ReceiveBufferSize];
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
 
-                    HTTPRequest request = HTTPRequest.Parse(requestLine);
-                    HTTPResponse response = RouteRequest(request);
+                    if (bytesRead == 0)
+                        return;
 
+                    string requestLine = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
-                    SendResponse(writer, response);
+                    Console.WriteLine("Received request: " + requestLine);
+
+                    if (!string.IsNullOrEmpty(requestLine))
+                    {
+                        HTTPRequest request = HTTPRequest.Parse(requestLine);
+                        HTTPResponse response = RouteRequest(request);
+
+                        SendResponse(writer, response);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Received empty request");
+                    }
                 }
-                else
-                {
-                    Console.WriteLine("Received empty request");
-                }
-
-                client.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error handling client: " + ex.Message);
+            }
+            finally
+            {
+                client?.Close();
             }
         }
 
@@ -72,12 +79,36 @@ namespace MonsterCardTradingGame.Server
             if (request.Method == "POST" && request.Path == "/login")
             {
                 Console.WriteLine("Received request: " + request.Path);
+                Thread.Sleep(10000);
                 return SessionController.HandleLogin(request);
             }
             else if (request.Method == "POST" && request.Path == "/register")
             {
                 return UserController.HandleRegistration(request);
-
+            }
+            else if (request.Method == "GET" && request.Path == "/viewprofile")
+            {
+                return UserController.HandleViewProfile(request);
+            }
+            else if (request.Method == "POST" && request.Path == "/editusername")
+            {
+                return UserController.HandleEditUsername(request);
+            }
+            else if (request.Method == "GET" && request.Path == "/scoreboard")
+            {
+                return UserController.HandleScoreboard(request);
+            }
+            else if (request.Method == "POST" && request.Path == "/aquirepackage")
+            {
+                return UserController.HandleAquirePackage(request);
+            }
+            else if (request.Method == "POST" && request.Path == "/createdeck")
+            {
+                return UserController.HandleCreateDeck(request);
+            }
+            else if (request.Method == "POST" && request.Path == "/battle")
+            {
+                return BattleController.HandleBattle(request);
             }
             else
             {

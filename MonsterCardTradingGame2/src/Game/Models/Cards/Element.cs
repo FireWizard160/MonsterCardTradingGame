@@ -2,7 +2,7 @@
 
 public enum Element
 {
-    Water,
-    Fire,
-    Normal
+    water,
+    fire,
+    normal
 }

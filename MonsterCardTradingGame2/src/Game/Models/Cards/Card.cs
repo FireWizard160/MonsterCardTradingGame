@@ -4,13 +4,15 @@ namespace MonsterCardTradingGame.Cards
 {
     public abstract class Card
     {
-        public Element _element { get; private set; }
-        public int damage { get; private set; }
+        public Guid id { get; set; }
+        public int damage { get; set; }
+        public Element _element { get; set; }
+        public string cardType { get; set; }
+        public int? ownerId { get; set; }
+        public bool isInDeck { get; set; }
 
-        protected Card(Element element, int damage)
-        {
-            this._element = element;
-            this.damage = damage;
-        }
+
+        public abstract void SetCardType();  // For setting the card type (Monster or Spell)
     }
+
 }

@@ -6,15 +6,21 @@ namespace MonsterCardTradingGame.src
 {
     public class User
     {
-        private string username { get; set; }
+        internal int id { get; set; }
+        internal string username { get; set; }
         private string password { get; set; }
-        private int coins { get; set; } = 20;
+        internal int coins { get; set; } = 20;
         private int token { get; set; }
-        private int elo { get; set; } = 100;
+        internal int losses { get; set; } = 0;
+        internal int wins { get; set; } = 0;
+        internal int elo { get; set; } = 100;
+        internal int gamesPlayed { get; set; } = 0;
 
 
 
         Card[] deck = new Card[3];
-        List<Card> stack;
+        private List<Card> cardCollection;
+
+
     }
 }

@@ -4,8 +4,12 @@ namespace MonsterCardTradingGame.Cards
 {
     public class MonsterCard : Card
     {
-        public MonsterCard(Element element, int damage) : base(element, damage)
+        public string MonsterType { get; set; }
+
+        public override void SetCardType()
         {
+            cardType = "monster";
         }
     }
+
 }

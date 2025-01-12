@@ -19,17 +19,25 @@ CREATE TABLE cards (
                        element_type VARCHAR(10) CHECK (element_type IN ('fire', 'water', 'normal')),
                        card_type VARCHAR(10) CHECK (card_type IN ('monster', 'spell')),
                        owner_id INT REFERENCES users(id) ON DELETE SET NULL,
-                       monster_type VARCHAR(10) CHECK (monster_type IN ('Goblins','Dragons','Knights','FireElves','Wizard','Orks','Kraken'))
-
+                       monster_type VARCHAR(10) CHECK (monster_type IN ('Goblins','Dragons','Knights','FireElves','Wizard','Orks','Kraken')),
+                       is_offered_as_trade BOOLEAN DEFAULT FALSE,
+                       is_in_deck BOOLEAN DEFAULT FALSE;
 );
 
 -- Decks table (cards assigned to a player's deck)
 CREATE TABLE decks (
                        id SERIAL PRIMARY KEY,
                        user_id INT REFERENCES users(id) ON DELETE CASCADE,
-                       card_id UUID REFERENCES cards(id) ON DELETE CASCADE,
-                       UNIQUE (user_id, card_id)
 );
+
+CREATE TABLE deck_cards (
+                            deck_id INT NOT NULL,
+                            card_id UUID NOT NULL,
+                            PRIMARY KEY (deck_id, card_id),
+                            FOREIGN KEY (deck_id) REFERENCES decks(id) ON DELETE CASCADE,
+                            FOREIGN KEY (card_id) REFERENCES cards(id) ON DELETE CASCADE
+);
+
 
 -- Packages table (packages of 5 cards that users can buy)
 CREATE TABLE packages (

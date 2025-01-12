@@ -1,62 +1,143 @@
-﻿using System;
-using MonsterCardTradingGame.Cards;
+﻿using MonsterCardTradingGame.Repositories;
+using MonsterCardTradingGame.Server;
 using MonsterCardTradingGame.src;
+using Newtonsoft.Json;
 
 namespace MonsterCardTradingGame.Cards
 {
     public class Battle
     {
-        // Define effectiveness rules
-        public double GetEffectiveness(Element attackerElement, Element defenderElement)
+        public List<string> BattleLog { get; private set; } = new List<string>();
+
+        public HTTPResponse StartBattle(List<Card> userDeck, List<Card> opponentDeck, int userId, int opponentId)
         {
-            if (attackerElement == Element.Water && defenderElement == Element.Fire)
-                return 2.0; // Water -> Fire
-            else if (attackerElement == Element.Fire && defenderElement == Element.Normal)
-                return 2.0; // Fire -> Normal
-            else if (attackerElement == Element.Normal && defenderElement == Element.Water)
-                return 2.0; // Normal -> Water
-            else if (attackerElement == Element.Fire && defenderElement == Element.Water)
-                return 0.5; // Fire -> Water
-            // Add more cases if needed...
-            return 1.0; // No special effectiveness
+            Random random = new Random();
+            int maxRounds = 100;
+
+            for (int round = 0; round < maxRounds && userDeck.Count > 0 && opponentDeck.Count > 0; round++)
+            {
+                // Select random cards from each deck
+                Card userCard = userDeck[random.Next(userDeck.Count)];
+                Card opponentCard = opponentDeck[random.Next(opponentDeck.Count)];
+
+                string userRuleLog, opponentRuleLog;
+
+                int userDamage = CalculateDamage(userCard, opponentCard, out userRuleLog);
+                int opponentDamage = CalculateDamage(opponentCard, userCard, out opponentRuleLog);
+
+                if (userDamage > opponentDamage)
+                {
+                    BattleLog.Add(
+                        $"Round {round + 1}: Your {DescribeCard(userCard)} defeated opponent's {DescribeCard(opponentCard)}. {userRuleLog}");
+                    opponentDeck.Remove(opponentCard); // Opponent's card is removed
+                }
+                else if (opponentDamage > userDamage)
+                {
+                    BattleLog.Add(
+                        $"Round {round + 1}: Opponent's {DescribeCard(opponentCard)} defeated your {DescribeCard(userCard)}. {opponentRuleLog}");
+                    userDeck.Remove(userCard); // User's card is removed
+                }
+                else
+                {
+                    BattleLog.Add(
+                        $"Round {round + 1}: It's a draw between your {DescribeCard(userCard)} and opponent's {DescribeCard(opponentCard)}. {userRuleLog} {opponentRuleLog}");
+                }
+            }
+
+            string result;
+            int userEloChange = 0;
+            int opponentEloChange = 0;
+            int? winnerId = null;
+
+            if (userDeck.Count > opponentDeck.Count)
+            {
+                result = "User wins the battle.";
+                winnerId = userId;
+                userEloChange = 10;
+                opponentEloChange = -5;
+            }
+            else if (opponentDeck.Count > userDeck.Count)
+            {
+                result = "Opponent wins the battle.";
+                winnerId = opponentId;
+                userEloChange = -5;
+                opponentEloChange = 10;
+            }
+            else
+            {
+                result = "The battle ends in a draw.";
+            }
+
+            // Save battle log and update Elo ratings
+            var battleRepository = new PostgreSqlBattleRepository();
+            battleRepository.SaveBattleLogToDatabase(userId, opponentId, winnerId, BattleLog);
+            battleRepository.UpdateElo(userId, userEloChange);
+            battleRepository.UpdateElo(opponentId, opponentEloChange);
+
+            // Return response
+            return new HTTPResponse(200, JsonConvert.SerializeObject(new { BattleLog, Result = result }));
         }
 
-        public int CalculateDamage(Card attacker, Card defender)
+
+        public int CalculateDamage(Card attacker, Card defender, out string ruleLog)
         {
-            // Check for special cases based on specific monster types
-            if (attacker is Goblin && defender is Dragon)
+            ruleLog = "";
+
+            // Implement special rules
+            if (attacker is MonsterCard attackerMonster && defender is MonsterCard defenderMonster)
             {
-                Console.WriteLine("Goblins are too afraid to attack Dragons!");
-                return 0; // Goblin won't attack Dragon
+                if (attackerMonster.MonsterType == "Goblin" && defenderMonster.MonsterType == "Dragon")
+                {
+                    ruleLog = "Goblin is too afraid of Dragon to attack.";
+                    return 0; // Goblin can't attack Dragon
+                }
+
+                if (attackerMonster.MonsterType == "Wizard" && defenderMonster.MonsterType == "Ork")
+                {
+                    ruleLog = "Wizard controls Ork, preventing it from dealing damage.";
+                    return 0; // Wizard neutralizes Ork
+                }
+
+                if (attackerMonster.MonsterType == "FireElf" && defenderMonster.MonsterType == "Dragon")
+                {
+                    ruleLog = "FireElf evades Dragon's attack.";
+                    return 0; // FireElf evades Dragon
+                }
             }
 
-            else if (attacker is Wizard && defender is Ork)
+            if (defender is MonsterCard defenderKnight && defenderKnight.MonsterType == "Knight" &&
+                attacker is SpellCard attackerSpell && attackerSpell._element == Element.water)
             {
-                Console.WriteLine("Wizards control Orks, no damage!");
-                return 0; // Wizard controls Ork
+                ruleLog = "Knight drowns instantly from WaterSpell.";
+                return int.MaxValue; // Instant defeat for Knight
             }
 
-            else if (attacker is SpellCard && defender is Knight && attacker._element == Element.Water)
+            if (defender is MonsterCard defenderKraken && attacker is SpellCard)
             {
-                Console.WriteLine("Knights drown instantly from WaterSpells!");
-                return 100000000; // Knight drowns instantly from WaterSpell
-            }
-
-            else if (attacker is SpellCard && defender is Kraken)
-            {
-                Console.WriteLine("The Kraken is immune to spells!");
+                ruleLog = "Kraken is immune to spells.";
                 return 0; // Kraken is immune to spells
             }
 
-            else if (attacker is Dragon && defender is FireElf)
-            {
-                Console.WriteLine("FireElves can evade Dragon attacks!");
-                return 0; // FireElf evades Dragon attacks
-            }
-
-            // If no special case, calculate normal damage
+            // Default damage calculation with effectiveness
             double effectiveness = GetEffectiveness(attacker._element, defender._element);
+            ruleLog += effectiveness > 1.0 ? " It's super effective!" :
+                effectiveness < 1.0 ? " It's not very effective." : "";
             return (int)(attacker.damage * effectiveness);
+        }
+
+        private double GetEffectiveness(Element attackerElement, Element defenderElement)
+        {
+            if (attackerElement == Element.water && defenderElement == Element.fire) return 2.0;
+            if (attackerElement == Element.fire && defenderElement == Element.normal) return 2.0;
+            if (attackerElement == Element.normal && defenderElement == Element.water) return 2.0;
+            if (attackerElement == Element.fire && defenderElement == Element.water) return 0.5;
+            return 1.0;
+        }
+
+        private string DescribeCard(Card card)
+        {
+            string typeDescription = card is MonsterCard monster ? $"{monster.MonsterType}" : "Spell";
+            return $"{typeDescription} ({card._element} - {card.damage} damage)";
         }
     }
 }
