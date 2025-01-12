@@ -13,7 +13,7 @@ namespace MonsterCardTradingGame.Tests
     {
         private Battle _battle;
 
-        // The SetUp method initializes the Battle instance before each test
+
         [SetUp]
         public void SetUp()
         {
@@ -60,7 +60,7 @@ namespace MonsterCardTradingGame.Tests
                 new MonsterCard { damage = 40, _element = Element.water }
             };
 
-            // Call StartBattle and capture the response
+
             var response = _battle.StartBattle(userDeck, opponentDeck, 1, 2);
 
             // Assert that the battle log contains the word 'Your' to indicate the user's card
@@ -73,13 +73,13 @@ namespace MonsterCardTradingGame.Tests
             var userDeck = new List<Card>
             {
                 new MonsterCard { damage = 50, _element = Element.fire },
-                new MonsterCard { damage = 30, _element = Element.water }
+
             };
 
             var opponentDeck = new List<Card>
             {
                 new MonsterCard { damage = 50, _element = Element.fire },
-                new MonsterCard { damage = 30, _element = Element.water }
+
             };
 
             var response = _battle.StartBattle(userDeck, opponentDeck, 1, 2);

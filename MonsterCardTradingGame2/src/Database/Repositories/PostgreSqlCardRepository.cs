@@ -11,9 +11,7 @@ namespace MonsterCardTradingGame.Repositories
     {
         private readonly string _connectionString = "Host=localhost;Username=postgres;Password=1234;Database=mtcg";
 
-        // Add a card to the database
-        //
-        //
+
         public static Card GenerateRandomCard(int userId)
 
 
@@ -22,20 +20,20 @@ namespace MonsterCardTradingGame.Repositories
             var random = new Random();
             var isMonsterCard = random.Next(2) == 0;
 
-            // Randomly choose element type: Fire, Water, or Normal using the enum
+            // Randomly choose element type: Fire, Water, or Normal
             var elementTypes = Enum.GetValues(typeof(Element));
             Element elementType = (Element)elementTypes.GetValue(random.Next(elementTypes.Length));
 
-            // Create the card
+
             Card card;
 
             if (isMonsterCard)
             {
-                // If it's a MonsterCard, randomly choose the monster type (subclass)
+
                 var monsterTypes = new[] { "Goblins", "Dragons", "Knights", "FireElves", "Wizard", "Orks", "Kraken" };
                 string monsterType = monsterTypes[random.Next(7)];
 
-                // Create the correct MonsterCard subclass based on the chosen monsterType
+
                 switch (monsterType)
                 {
                     case "Dragons":
@@ -146,21 +144,21 @@ namespace MonsterCardTradingGame.Repositories
                 {
                     cmd.Parameters.AddWithValue("damage", card.damage);
 
-                    // Convert the Element enum to its string representation
+
                     cmd.Parameters.AddWithValue("element_type",
-                        card._element.ToString().ToLower()); // Ensure it is lowercase (fire, water, normal)
+                        card._element.ToString().ToLower());
                     cmd.Parameters.AddWithValue("card_type", card.cardType);
                     cmd.Parameters.AddWithValue("owner_id", card.ownerId);
 
-                    // Check if the card is a MonsterCard and set monster_type accordingly
+
                     if (card is MonsterCard monsterCard)
                     {
-                        // If it's a MonsterCard, set the monster type
+
                         cmd.Parameters.AddWithValue("monster_type", monsterCard.MonsterType);
                     }
                     else
                     {
-                        // If it's not a MonsterCard, set monster_type to DBNull.Value
+
                         cmd.Parameters.AddWithValue("monster_type", DBNull.Value);
                     }
 
@@ -226,7 +224,7 @@ namespace MonsterCardTradingGame.Repositories
                 }
             }
 
-// If no rows were returned, return null or throw an exception
+
             return null;
         }
 

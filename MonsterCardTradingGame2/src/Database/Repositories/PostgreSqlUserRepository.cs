@@ -10,7 +10,7 @@ namespace MonsterCardTradingGame.Repositories
 
 
 
-        // Add a user with plaintext password
+
         public bool AddUser(string username, string password)
         {
             using (var conn = new NpgsqlConnection(_connectionString))
@@ -20,13 +20,13 @@ namespace MonsterCardTradingGame.Repositories
                     "INSERT INTO users (username, password) VALUES (@username, @password) ON CONFLICT (username) DO NOTHING", conn))
                 {
                     cmd.Parameters.AddWithValue("username", username);
-                    cmd.Parameters.AddWithValue("password", password); // Store as plaintext
+                    cmd.Parameters.AddWithValue("password", password);
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
         }
 
-        // Validate user with plaintext password comparison
+
         public bool ValidateUser(string username, string password)
         {
             using (var conn = new NpgsqlConnection(_connectionString))
@@ -42,7 +42,7 @@ namespace MonsterCardTradingGame.Repositories
             }
         }
 
-        // Update session token in the users table
+
         public void AddSession(string username, string token)
         {
             using (var conn = new NpgsqlConnection(_connectionString))
@@ -58,7 +58,7 @@ namespace MonsterCardTradingGame.Repositories
             }
         }
 
-        // Retrieve session token from the users table
+
         public string GetSessionToken(string username)
         {
             using (var conn = new NpgsqlConnection(_connectionString))
@@ -73,7 +73,7 @@ namespace MonsterCardTradingGame.Repositories
             }
         }
 
-        // Get user by session token (returns as a Dictionary)
+
         public User GetUserBySessionToken(string sessionToken)
         {
             using (var conn = new NpgsqlConnection(_connectionString))
@@ -118,7 +118,7 @@ namespace MonsterCardTradingGame.Repositories
             }
         }
 
-// Update the username in the users table
+
         public void UpdateUsername(string sessionToken, string newUsername)
         {
             using (var conn = new NpgsqlConnection(_connectionString))
@@ -134,8 +134,7 @@ namespace MonsterCardTradingGame.Repositories
             }
         }
 
-        // Get a list of users sorted by elo
-        // Get a list of users sorted by elo (returns a List of User objects)
+
         public List<User> GetUsersSortedByElo()
         {
             var users = new List<User>();

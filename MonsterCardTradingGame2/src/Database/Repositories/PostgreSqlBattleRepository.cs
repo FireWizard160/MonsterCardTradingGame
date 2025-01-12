@@ -22,7 +22,7 @@ namespace MonsterCardTradingGame.Repositories
                     cmd.Parameters.AddWithValue("player2_id", player2Id);
                     cmd.Parameters.AddWithValue("winner_id", winnerId.HasValue ? (object)winnerId.Value : DBNull.Value); // Handle null for draws
                     cmd.Parameters.AddWithValue("battle_log", string.Join("\n", battleLog));
-                    cmd.Parameters.AddWithValue("created_at", DateTime.UtcNow); // Use the current UTC timestamp
+                    cmd.Parameters.AddWithValue("created_at", DateTime.UtcNow);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -44,7 +44,7 @@ namespace MonsterCardTradingGame.Repositories
                     {
                         while (reader.Read())
                         {
-                            string cardType = reader.GetString(3); // "Monster" or "Spell"
+                            string cardType = reader.GetString(3);
                             if (cardType == "monster")
                             {
                                 // Create a MonsterCard and set the monster type
@@ -54,7 +54,7 @@ namespace MonsterCardTradingGame.Repositories
                                     damage = reader.GetInt32(1),
                                     _element = Enum.Parse<Element>(reader.GetString(2)),
                                     cardType = "monster",
-                                    MonsterType = reader.GetString(4) // Read the monster type as a string
+                                    MonsterType = reader.GetString(4)
                                 };
 
 
@@ -139,11 +139,11 @@ namespace MonsterCardTradingGame.Repositories
                 conn.Open();
                 foreach (var card in deck)
                 {
-                    card.damage += 5; // Update the card's damage in memory
+                    card.damage += 5; // Update the card's damage
                     using (var cmd = new NpgsqlCommand("UPDATE cards SET damage = damage + 5 WHERE id = @id", conn))
                     {
                         cmd.Parameters.AddWithValue("id", card.id);
-                        cmd.ExecuteNonQuery(); // Persist the change in the database
+                        cmd.ExecuteNonQuery();
                     }
                 }
             }

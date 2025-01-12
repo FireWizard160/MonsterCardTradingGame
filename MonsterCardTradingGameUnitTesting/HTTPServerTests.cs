@@ -46,7 +46,7 @@ namespace MonsterCardTradingGame.Tests
             // Verify the response contains a token
             Assert.That(response.Body, Does.Contain("\"token\":"));
 
-            // Optionally, you can parse the response body to verify it is valid JSON with a token field
+
             var responseBody = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(response.Body);
             Assert.That((string)responseBody.token, Is.Not.Null.And.Not.Empty);
         }

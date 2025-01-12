@@ -18,7 +18,7 @@ namespace MonsterCardTradingGame.Controllers
         {
             try
             {
-                // Parse the body JSON string into a dictionary
+
                 var body = JsonSerializer.Deserialize<Dictionary<string, string>>(request.Body);
 
                 if (body == null || !body.ContainsKey("username") || !body.ContainsKey("password"))
@@ -107,7 +107,7 @@ namespace MonsterCardTradingGame.Controllers
                 return new HTTPResponse(401, "{\"error\": \"Invalid session token\"}");
             }
 
-            // Check if the new username is available (i.e., not already taken)
+
             bool isUsernameAvailable = userRepository.IsUsernameAvailable(newUsername);
 
             if (!isUsernameAvailable)
@@ -118,14 +118,14 @@ namespace MonsterCardTradingGame.Controllers
             // Update the username in the database
             userRepository.UpdateUsername(sessionToken, newUsername);
 
-            // Return success response
+
             return new HTTPResponse(200, "{\"message\": \"Username updated successfully\"}");
         }
 
 
         public static HTTPResponse HandleScoreboard(HTTPRequest request)
         {
-            // Initialize repository and get the list of all users, sorted by elo
+            // Initialize repository and get the list of all users sorted by elo
             var userRepository = new PostgreSqlUserRepository();
             var users = userRepository.GetUsersSortedByElo();
 
@@ -168,19 +168,19 @@ namespace MonsterCardTradingGame.Controllers
                 return new HTTPResponse(401, "{\"error\": \"Invalid session token\"}");
             }
 
-            // Check if the user has enough coins (at least 5)
+            // Check if the user has enough coins
             if (user.coins < 5)
             {
                 return new HTTPResponse(400, "{\"error\": \"Not enough coins\"}");
             }
 
-            // Deduct the coins for the package
+
             userRepository.DeductCoins(user.id, 5);
 
             // List to store acquired cards
             var acquiredCards = new List<Card>();
 
-            // Generate 5 cards (both Monster and Spell types with random element and monster type)
+
             var cardRepository = new PostgreSqlCardRepository();
             for (int i = 0; i < 5; i++)
             {
@@ -189,7 +189,7 @@ namespace MonsterCardTradingGame.Controllers
                 acquiredCards.Add(card);
             }
 
-            // Prepare the response message with the acquired cards
+
             var acquiredCardDetails = acquiredCards.Select(card => new
             {
                 card.id,
