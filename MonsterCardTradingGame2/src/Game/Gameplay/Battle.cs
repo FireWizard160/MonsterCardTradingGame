@@ -68,11 +68,20 @@ namespace MonsterCardTradingGame.Cards
                 result = "The battle ends in a draw.";
             }
 
-            // Save battle log and update Elo ratings
+            // Save battle log, update Elo ratings, and handle card leveling
             var battleRepository = new PostgreSqlBattleRepository();
             battleRepository.SaveBattleLogToDatabase(userId, opponentId, winnerId, BattleLog);
             battleRepository.UpdateElo(userId, userEloChange);
             battleRepository.UpdateElo(opponentId, opponentEloChange);
+
+            if (winnerId == userId)
+            {
+                battleRepository.LevelUpCards(userDeck); // Level up the winner's cards
+            }
+            else if (winnerId == opponentId)
+            {
+                battleRepository.LevelUpCards(opponentDeck); // Level up the winner's cards
+            }
 
             // Return response
             return new HTTPResponse(200, JsonConvert.SerializeObject(new { BattleLog, Result = result }));

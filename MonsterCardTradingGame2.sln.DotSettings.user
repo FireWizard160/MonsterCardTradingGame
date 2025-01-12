@@ -1,0 +1,9 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0a9de5c4_002D521d_002D4706_002Da9ff_002D1900bf561cf1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="BattleTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::7ED62E8B-833C-464F-9ABD-B0E3FF15FD48::net8.0::MonsterCardTradingGame.Tests.BattleTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::7ED62E8B-833C-464F-9ABD-B0E3FF15FD48::net8.0::MonsterCardTradingGame.Tests.HTTPServerTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::7ED62E8B-833C-464F-9ABD-B0E3FF15FD48::net8.0::MonsterCardTradingGame.Tests.DatabaseTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::7ED62E8B-833C-464F-9ABD-B0E3FF15FD48::net8.0::MonsterCardTradingGame.Tests.ControllerTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -132,6 +132,23 @@ namespace MonsterCardTradingGame.Repositories
             }
         }
 
+        public void LevelUpCards(List<Card> deck)
+        {
+            using (var conn = new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+                foreach (var card in deck)
+                {
+                    card.damage += 5; // Update the card's damage in memory
+                    using (var cmd = new NpgsqlCommand("UPDATE cards SET damage = damage + 5 WHERE id = @id", conn))
+                    {
+                        cmd.Parameters.AddWithValue("id", card.id);
+                        cmd.ExecuteNonQuery(); // Persist the change in the database
+                    }
+                }
+            }
+        }
+
 
 
 

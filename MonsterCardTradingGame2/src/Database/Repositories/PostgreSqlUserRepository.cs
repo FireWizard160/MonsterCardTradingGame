@@ -8,6 +8,8 @@ namespace MonsterCardTradingGame.Repositories
     {
         private readonly string _connectionString = "Host=localhost;Username=postgres;Password=1234;Database=mtcg";
 
+
+
         // Add a user with plaintext password
         public bool AddUser(string username, string password)
         {

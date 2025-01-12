@@ -74,7 +74,7 @@ namespace MonsterCardTradingGame.Server
             }
         }
 
-        private HTTPResponse RouteRequest(HTTPRequest request)
+        public HTTPResponse RouteRequest(HTTPRequest request)
         {
             if (request.Method == "POST" && request.Path == "/login")
             {
