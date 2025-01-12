@@ -149,7 +149,22 @@ namespace MonsterCardTradingGame.Repositories
             }
         }
 
+        public void UpdateUserStatistics(int userId, bool isWinner)
+        {
+            using (var conn = new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+                string sql = isWinner
+                    ? "UPDATE users SET wins = wins + 1, games_played = games_played + 1 WHERE id = @userId"
+                    : "UPDATE users SET losses = losses + 1, games_played = games_played + 1 WHERE id = @userId";
 
+                using (var cmd = new NpgsqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("userId", userId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
 
     }

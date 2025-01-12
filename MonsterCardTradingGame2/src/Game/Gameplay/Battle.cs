@@ -29,13 +29,15 @@ namespace MonsterCardTradingGame.Cards
                 {
                     BattleLog.Add(
                         $"Round {round + 1}: Your {DescribeCard(userCard)} defeated opponent's {DescribeCard(opponentCard)}. {userRuleLog}");
-                    opponentDeck.Remove(opponentCard); // Opponent's card is removed
+                    opponentDeck.Remove(opponentCard);
+                    userDeck.Add(opponentCard);// Opponent's card is removed
                 }
                 else if (opponentDamage > userDamage)
                 {
                     BattleLog.Add(
                         $"Round {round + 1}: Opponent's {DescribeCard(opponentCard)} defeated your {DescribeCard(userCard)}. {opponentRuleLog}");
-                    userDeck.Remove(userCard); // User's card is removed
+                    userDeck.Remove(userCard);
+                    opponentDeck.Add(userCard);// User's card is removed
                 }
                 else
                 {
@@ -49,12 +51,17 @@ namespace MonsterCardTradingGame.Cards
             int opponentEloChange = 0;
             int? winnerId = null;
 
+            var battleRepository = new PostgreSqlBattleRepository();
+
             if (userDeck.Count > opponentDeck.Count)
             {
                 result = "User wins the battle.";
                 winnerId = userId;
                 userEloChange = 10;
                 opponentEloChange = -5;
+
+                battleRepository.UpdateUserStatistics(userId, true); // User wins
+                battleRepository.UpdateUserStatistics(opponentId, false); // Opponent loses
             }
             else if (opponentDeck.Count > userDeck.Count)
             {
@@ -62,14 +69,18 @@ namespace MonsterCardTradingGame.Cards
                 winnerId = opponentId;
                 userEloChange = -5;
                 opponentEloChange = 10;
+
+                battleRepository.UpdateUserStatistics(userId, false); // User loses
+                battleRepository.UpdateUserStatistics(opponentId, true); // Opponent wins
             }
             else
             {
                 result = "The battle ends in a draw.";
+                battleRepository.UpdateUserStatistics(userId, false); // User doesn't win
+                battleRepository.UpdateUserStatistics(opponentId, false); // Opponent doesn't win
             }
 
-            // Save battle log, update Elo ratings, and handle card leveling
-            var battleRepository = new PostgreSqlBattleRepository();
+            // Save battle log and update Elo ratings
             battleRepository.SaveBattleLogToDatabase(userId, opponentId, winnerId, BattleLog);
             battleRepository.UpdateElo(userId, userEloChange);
             battleRepository.UpdateElo(opponentId, opponentEloChange);
